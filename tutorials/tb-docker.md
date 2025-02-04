@@ -16,9 +16,34 @@ cd <project_name>
 
 ```bash
 touch docker-compose.yml
+vim docker-compose.yml
 ```
 
-> Step 3. Running the comands below: 
+> Step 3. Paste the following configuration into the `docker-compose.yml` file:
+```yml
+services:
+  mytb:
+    restart: always
+    image: "thingsboard/tb-postgres"
+    ports:
+      - "8080:9090"
+      - "1883:1883"
+      - "7070:7070"
+      - "5683-5688:5683-5688/udp"
+    environment:
+      TB_QUEUE_TYPE: in-memory
+    volumes:
+      - thingsboard-data:/data
+      - thingsboard-logs:/var/log/thingsboard
+volumes:
+  thingsboard-data:
+    external: true
+  thingsboard-logs:
+    external: true
+``` 
+
+
+> Step 4. Running the comands below: 
 
 ```bash
 docker volume create thingsboard-data
@@ -26,7 +51,7 @@ docker volume create thingsboard-logs
 docker-compose up -d 
 ```
 
-> Step 4. Access the ThingsBoard web interface:
+> Step 5. Access the ThingsBoard web interface:
 
 - System Administrator: sysadmin@thingsboard.org / sysadmin
 
